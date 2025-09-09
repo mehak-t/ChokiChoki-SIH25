@@ -1,8 +1,9 @@
-// src/components/DataIngestion.tsx
+// src/pages/DataIngestion.tsx
 "use client";
 
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavigationSidebar from '@/components/NavigationSidebar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,6 +32,10 @@ export default function DataIngestion() {
     stablingPosition: '',
     manualOverride: false
   });
+
+  const handleLogout = () => {
+    navigate('/login');
+  };
 
   // New function to handle file selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,9 +69,12 @@ export default function DataIngestion() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6" 
-         style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="w-full max-w-2xl">
+    <div className="flex min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      {/* Navigation Sidebar */}
+      <NavigationSidebar currentPage="/data-ingestion" onLogout={handleLogout} />
+      
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="w-full max-w-2xl">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
             Fleet Data Ingestion
@@ -234,6 +242,7 @@ export default function DataIngestion() {
               Process & Optimize
             </Button>
           </div>
+        </div>
         </div>
       </div>
     </div>

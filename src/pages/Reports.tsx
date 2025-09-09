@@ -4,9 +4,10 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { LayoutDashboard, FileText, HardHat, ClipboardList, Tag, Bolt, Users, Route, CheckCircle2, AlertTriangle, XCircle, Sun, Moon, LogOut } from 'lucide-react';
+import { HardHat, ClipboardList, Tag, Bolt, Users, Route, CheckCircle2, AlertTriangle, XCircle, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import NavigationSidebar from '@/components/NavigationSidebar';
 
 // --- MOCK DATA & TYPES ---
 interface ChecklistItem {
@@ -106,44 +107,8 @@ export default function Reports() {
 
     return (
         <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50">
-            {/* Sidebar Navigation */}
-            <aside
-                className="w-64 flex flex-col justify-between p-6 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800"
-            >
-                <div className="space-y-6">
-                    <div className="text-2xl font-bold text-cyan-500">
-                        KMRL
-                    </div>
-
-                    <nav className="space-y-2">
-                        <a
-                            href="/dashboard"
-                            className="flex items-center space-x-3 p-3 rounded-lg font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                        >
-                            <LayoutDashboard className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-                            <span>Dashboard</span>
-                        </a>
-                        <a
-                            href="/reports"
-                            className="flex items-center space-x-3 p-3 rounded-lg font-medium bg-gray-100 dark:bg-gray-700 text-cyan-500"
-                        >
-                            <FileText className="h-5 w-5" />
-                            <span>Reports</span>
-                        </a>
-                    </nav>
-                </div>
-                {/* Logout button at the bottom */}
-                <div className="mt-auto">
-                    <Button
-                        onClick={handleLogout}
-                        className="w-full justify-start space-x-3 p-3 font-medium rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        variant="ghost"
-                    >
-                        <LogOut className="h-5 w-5" />
-                        <span>Logout</span>
-                    </Button>
-                </div>
-            </aside>
+            {/* Navigation Sidebar with all options including Data Ingestion */}
+            <NavigationSidebar currentPage="/reports" onLogout={handleLogout} />
 
             {/* Main Content Area */}
             <main className="flex-1 flex flex-col overflow-hidden">

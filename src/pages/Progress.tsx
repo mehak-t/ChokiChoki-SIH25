@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, Clock, Circle } from 'lucide-react';
+import NavigationSidebar from '@/components/NavigationSidebar';
 
 const progressSteps = [
   'Validating fleet data integrity',
@@ -14,6 +15,10 @@ export default function Progress() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+
+  const handleLogout = () => {
+    navigate('/login');
+  };
 
   useEffect(() => {
     const progressInterval = setInterval(() => {
@@ -49,9 +54,12 @@ export default function Progress() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6" 
-         style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="w-full max-w-lg">
+    <div className="flex min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      {/* Navigation Sidebar */}
+      <NavigationSidebar currentPage="/progress" onLogout={handleLogout} />
+      
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="w-full max-w-lg">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
             Running Optimization Engine...
@@ -131,6 +139,7 @@ export default function Progress() {
               Please wait while we optimize your fleet operations...
             </p>
           </div>
+        </div>
         </div>
       </div>
     </div>

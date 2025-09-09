@@ -12,8 +12,8 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login and navigate to data ingestion
-    navigate('/data-ingestion');
+    // Simulate login and navigate directly to dashboard (data comes from backend)
+    navigate('/dashboard');
   };
 
   return (

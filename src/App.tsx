@@ -26,7 +26,7 @@ const App = () => (
           <Route path="/progress" element={<Progress />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/reports" element={<Reports />} />
-          <Route path="/databases" element={<Databases />} /> {/* Add the Databases route */}
+          <Route path="/databases" element={<Databases />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
