@@ -1,76 +1,60 @@
-interface ChartDataPoint {
-  name: string;
-  value: number;
-  color: string;
-}
+// src/components/dashboard/StatusPieChart.tsx
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 interface StatusPieChartProps {
-  data: ChartDataPoint[];
+    data: {
+        name: string;
+        value: number;
+        color: string;
+    }[];
+    isDarkMode: boolean; // Add this prop
 }
 
-export default function StatusPieChart({ data }: StatusPieChartProps) {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
-  
-  return (
-    <div 
-      className="card-radius card-shadow p-6"
-      style={{ backgroundColor: 'var(--bg-secondary)' }}
-    >
-      <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
-        Status Distribution
-      </h3>
-      
-      <div className="flex items-center justify-center mb-4">
-        <div className="relative w-32 h-32">
-          <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
-            {data.map((item, index) => {
-              const percentage = (item.value / total) * 100;
-              const strokeDasharray = `${percentage} ${100 - percentage}`;
-              const strokeDashoffset = -data.slice(0, index).reduce((sum, prev) => sum + (prev.value / total) * 100, 0);
-              
-              return (
-                <circle
-                  key={index}
-                  cx="50"
-                  cy="50"
-                  r="15.9155"
-                  fill="transparent"
-                  stroke={item.color}
-                  strokeWidth="8"
-                  strokeDasharray={strokeDasharray}
-                  strokeDashoffset={strokeDashoffset}
-                  className="transition-all duration-300"
-                />
-              );
-            })}
-          </svg>
-        </div>
-      </div>
-      
-      <div className="space-y-2">
-        {data.map((item, index) => (
-          <div key={index} className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div 
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: item.color }}
-              ></div>
-              <span 
-                className="text-sm"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                {item.name}
-              </span>
-            </div>
-            <span 
-              className="text-sm font-medium"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              {item.value}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+const COLORS = ['#22c55e', '#f59e0b', '#ef4444'];
+
+export default function StatusPieChart({ data, isDarkMode }: StatusPieChartProps) {
+    const bgColor = isDarkMode ? 'bg-slate-800' : 'bg-white';
+    const textColor = isDarkMode ? 'text-white' : 'text-black';
+    const borderColor = isDarkMode ? 'border-slate-700' : 'border-gray-200';
+    const mutedTextColor = isDarkMode ? 'text-slate-400' : 'text-gray-500';
+
+    return (
+        <Card className={`flex flex-col h-full ${bgColor} ${textColor} border ${borderColor}`}>
+            <CardHeader>
+                <CardTitle className="text-xl font-semibold">
+                    Status Distribution
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col justify-end">
+                <div className="flex-1 min-h-[120px] mb-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={data}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={40}
+                                outerRadius={60}
+                                fill="#8884d8"
+                                dataKey="value"
+                            >
+                                {data.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                            </Pie>
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="flex-shrink-0 flex items-center justify-center space-x-4">
+                    {data.map((entry, index) => (
+                        <div key={index} className={`flex items-center space-x-1 text-sm ${mutedTextColor}`}>
+                            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: entry.color }}></span>
+                            <span>{entry.name}</span>
+                        </div>
+                    ))}
+                </div>
+            </CardContent>
+        </Card>
+    );
 }

@@ -1,65 +1,45 @@
-interface KPIData {
-  brandingFulfillment: number;
-  mileageBalance: number;
-  shuntingMoves: number;
-  riskAlerts: number;
-}
+// src/components/dashboard/KPIScorecard.tsx
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface KPIScorecardProps {
-  data: KPIData;
+  data: any;
+  title?: string;
+  isDarkMode: boolean; // Add this prop to control the theme
 }
 
-export default function KPIScorecard({ data }: KPIScorecardProps) {
-  const kpis = [
-    {
-      label: 'Branding Fulfillment',
-      value: `${data.brandingFulfillment}%`,
-      color: 'var(--status-green)'
-    },
-    {
-      label: 'Mileage Balance',
-      value: `${data.mileageBalance}/100`,
-      color: 'var(--accent-orange)'
-    },
-    {
-      label: 'Shunting Moves',
-      value: data.shuntingMoves.toString(),
-      color: 'var(--status-yellow)'
-    },
-    {
-      label: 'Risk Alerts',
-      value: data.riskAlerts.toString(),
-      color: 'var(--status-red)'
-    }
-  ];
+export default function KPIScorecard({ data, title = "KPI Average Scorecard", isDarkMode }: KPIScorecardProps) {
+  const bgColor = isDarkMode ? 'bg-slate-800' : 'bg-white';
+  const textColor = isDarkMode ? 'text-white' : 'text-black';
+  const borderColor = isDarkMode ? 'border-slate-700' : 'border-gray-200';
+  const mutedTextColor = isDarkMode ? 'text-slate-400' : 'text-gray-500';
 
   return (
-    <div 
-      className="card-radius card-shadow p-6"
-      style={{ backgroundColor: 'var(--bg-secondary)' }}
-    >
-      <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
-        KPI Scorecard
-      </h3>
-      
-      <div className="grid grid-cols-2 gap-4">
-        {kpis.map((kpi, index) => (
-          <div key={index} className="text-center">
-            <div 
-              className="text-2xl font-bold mb-1"
-              style={{ color: kpi.color }}
-            >
-              {kpi.value}
-            </div>
-            <div 
-              className="text-xs"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              {kpi.label}
-            </div>
+    <Card className={`flex flex-col h-full ${bgColor} ${textColor} border ${borderColor}`}>
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1 flex flex-col justify-end">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col items-center">
+            <span className="text-4xl font-bold text-green-500">{data.brandingFulfillment}%</span>
+            <span className={`text-sm mt-1 ${mutedTextColor}`}>Branding Fulfillment</span>
           </div>
-        ))}
-      </div>
-    </div>
+          <div className="flex flex-col items-center">
+            <span className="text-4xl font-bold text-orange-500">{data.mileageBalance}/100</span>
+            <span className={`text-sm mt-1 ${mutedTextColor}`}>Mileage Balance</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="text-4xl font-bold text-red-500">{data.shuntingMoves}</span>
+            <span className={`text-sm mt-1 ${mutedTextColor}`}>Shunting Moves</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <span className="text-4xl font-bold text-red-500">{data.riskAlerts}</span>
+            <span className={`text-sm mt-1 ${mutedTextColor}`}>Risk Alerts</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

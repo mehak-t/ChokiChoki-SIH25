@@ -1,4 +1,7 @@
-import { useState } from 'react';
+// src/components/DataIngestion.tsx
+"use client";
+
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +14,13 @@ import { Upload } from 'lucide-react';
 export default function DataIngestion() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('upload-csv');
-  
+
+  // New state to manage the selected file
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // New ref to reference the hidden file input
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Manual input form state
   const [formData, setFormData] = useState({
     fitnessValidThru: '',
@@ -23,7 +32,27 @@ export default function DataIngestion() {
     manualOverride: false
   });
 
+  // New function to handle file selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  // New function to programmatically click the hidden input
+  const handleBrowseClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleProcess = () => {
+    // You can add logic here to handle either file upload or manual input
+    if (activeTab === 'upload-csv' && selectedFile) {
+        // Handle CSV processing
+        console.log('Processing CSV file:', selectedFile.name);
+    } else if (activeTab === 'manual-input') {
+        // Handle manual data processing
+        console.log('Processing manual data:', formData);
+    }
     navigate('/progress');
   };
 
@@ -73,9 +102,20 @@ export default function DataIngestion() {
                 <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
                   Supported format: CSV files up to 10MB
                 </p>
-                <Button variant="outline" className="button-radius">
+                {/* Hidden file input element */}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                  accept=".csv, .xlsx"
+                />
+                <Button onClick={handleBrowseClick} variant="outline" className="button-radius">
                   Browse Files
                 </Button>
+                {selectedFile && (
+                    <p className="mt-2 text-sm text-slate-400">Selected file: **{selectedFile.name}**</p>
+                )}
               </div>
             </TabsContent>
 
@@ -188,6 +228,8 @@ export default function DataIngestion() {
                 backgroundColor: 'var(--accent-orange)',
                 color: 'white'
               }}
+              // Disable the button if no file is selected for the CSV tab
+              disabled={activeTab === 'upload-csv' && !selectedFile}
             >
               Process & Optimize
             </Button>

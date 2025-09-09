@@ -8,6 +8,8 @@ import DataIngestion from "./pages/DataIngestion";
 import Progress from "./pages/Progress";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import Reports from "./pages/Reports";
+import Databases from "./pages/Databases"; // Add the Databases import
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/data-ingestion" element={<DataIngestion />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/databases" element={<Databases />} /> {/* Add the Databases route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

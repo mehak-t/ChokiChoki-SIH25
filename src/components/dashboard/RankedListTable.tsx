@@ -18,10 +18,10 @@ interface RankedListTableProps {
 
 export default function RankedListTable({ data, onRowClick }: RankedListTableProps) {
   const getStatusPill = (status: string) => {
-    const statusClass = status === 'Ready to Run' ? 'status-ready' 
-      : status === 'On Standby' ? 'status-standby' 
+    const statusClass = status === 'Ready to Run' ? 'status-ready'
+      : status === 'On Standby' ? 'status-standby'
       : 'status-hold';
-    
+
     return (
       <span className={`status-pill ${statusClass}`}>
         {status}
@@ -36,7 +36,7 @@ export default function RankedListTable({ data, onRowClick }: RankedListTablePro
   };
 
   return (
-    <div 
+    <div
       className="card-radius card-shadow overflow-hidden"
       style={{ backgroundColor: 'var(--bg-secondary)' }}
     >
@@ -45,7 +45,7 @@ export default function RankedListTable({ data, onRowClick }: RankedListTablePro
           <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
             Showing {data.length} trainsets
           </h3>
-          
+
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--status-green)' }}></div>
@@ -80,10 +80,10 @@ export default function RankedListTable({ data, onRowClick }: RankedListTablePro
           </thead>
           <tbody>
             {data.map((train, index) => (
-              <tr 
+              <tr
                 key={train.id}
                 className="border-b cursor-pointer hover:opacity-75 transition-colors"
-                style={{ 
+                style={{
                   borderColor: 'var(--border-color)'
                 }}
                 onClick={() => onRowClick(train)}
@@ -101,7 +101,7 @@ export default function RankedListTable({ data, onRowClick }: RankedListTablePro
                   <span className="text-green-600">✓</span>
                 </td>
                 <td className="p-4">
-                  {train.status === 'Ready to Run' ? (
+                  {train.status === 'Ready to Run' || train.status === 'On Standby' ? (
                     <span className="text-green-600">✓</span>
                   ) : (
                     <AlertTriangle className="h-4 w-4 text-yellow-500" />
@@ -114,10 +114,10 @@ export default function RankedListTable({ data, onRowClick }: RankedListTablePro
                   <span className="text-green-600">✓</span>
                 </td>
                 <td className="p-4">
-                  {train.status === 'Hold Back' ? (
-                    <AlertTriangle className="h-4 w-4 text-red-500" />
-                  ) : (
+                  {train.status === 'Ready to Run' || train.status === 'On Standby' ? (
                     <span className="text-green-600">✓</span>
+                  ) : (
+                    <AlertTriangle className="h-4 w-4 text-red-500" />
                   )}
                 </td>
                 <td className="p-4">

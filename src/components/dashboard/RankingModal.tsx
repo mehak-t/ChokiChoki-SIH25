@@ -21,12 +21,12 @@ interface RankingModalProps {
 export default function RankingModal({ train, onClose }: RankingModalProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div 
-        className="w-full max-w-md card-radius card-shadow p-6"
+      <div
+        className="w-full max-w-md card-radius card-shadow p-5" // Reduced p-6 to p-5
         style={{ backgroundColor: 'var(--bg-secondary)' }}
       >
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>
+        <div className="flex items-center justify-between mb-4"> {/* Reduced mb-6 to mb-4 */}
+          <h2 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}> {/* Reduced text-xl to text-lg */}
             Ranking Explanation for Train {train.id}
           </h2>
           <Button
@@ -39,52 +39,52 @@ export default function RankingModal({ train, onClose }: RankingModalProps) {
           </Button>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4"> {/* Reduced space-y-6 to space-y-4 */}
           {/* Final Score */}
           <div className="text-center">
-            <div className="text-4xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+            <div className="text-3xl font-bold mb-1.5" style={{ color: 'var(--text-primary)' }}> {/* Reduced text-4xl to text-3xl, mb-2 to mb-1.5 */}
               {train.scores.final}
             </div>
-            <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <div className="text-xs" style={{ color: 'var(--text-secondary)' }}> {/* Reduced text-sm to text-xs */}
               Final Score
             </div>
           </div>
 
           {/* Score Breakdown */}
           <div>
-            <h3 className="font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="font-semibold mb-2 text-sm" style={{ color: 'var(--text-primary)' }}> {/* Reduced mb-3 to mb-2, added text-sm */}
               Score Breakdown
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-2"> {/* Reduced space-y-3 to space-y-2 */}
               <div className="flex justify-between items-center">
-                <span className="text-sm" style={{ color: 'var(--text-primary)' }}>
+                <span className="text-xs" style={{ color: 'var(--text-primary)' }}> {/* Reduced text-sm to text-xs */}
                   Low Mileage
                 </span>
-                <span className="text-sm font-medium" style={{ color: 'var(--status-green)' }}>
+                <span className="text-xs font-medium" style={{ color: 'var(--status-green)' }}> {/* Reduced text-sm to text-xs */}
                   +{train.scores.mileage}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm" style={{ color: 'var(--text-primary)' }}>
+                <span className="text-xs" style={{ color: 'var(--text-primary)' }}> {/* Reduced text-sm to text-xs */}
                   Maintenance Window Fit
                 </span>
-                <span className="text-sm font-medium" style={{ color: 'var(--status-green)' }}>
+                <span className="text-xs font-medium" style={{ color: 'var(--status-green)' }}> {/* Reduced text-sm to text-xs */}
                   +{train.scores.maintenanceFit}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm" style={{ color: 'var(--text-primary)' }}>
+                <span className="text-xs" style={{ color: 'var(--text-primary)' }}> {/* Reduced text-sm to text-xs */}
                   Branding Balance
                 </span>
-                <span className="text-sm font-medium" style={{ color: 'var(--status-green)' }}>
+                <span className="text-xs font-medium" style={{ color: 'var(--status-green)' }}> {/* Reduced text-sm to text-xs */}
                   +{train.scores.brandingBalance}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm" style={{ color: 'var(--text-primary)' }}>
+                <span className="text-xs" style={{ color: 'var(--text-primary)' }}> {/* Reduced text-sm to text-xs */}
                   Crew Availability
                 </span>
-                <span className="text-sm font-medium" style={{ color: 'var(--status-green)' }}>
+                <span className="text-xs font-medium" style={{ color: 'var(--status-green)' }}> {/* Reduced text-sm to text-xs */}
                   +{train.scores.crewAvailability}
                 </span>
               </div>
@@ -93,20 +93,20 @@ export default function RankingModal({ train, onClose }: RankingModalProps) {
 
           {/* Alerts */}
           <div>
-            <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="font-semibold mb-1.5 text-sm" style={{ color: 'var(--text-primary)' }}> {/* Reduced mb-2 to mb-1.5, added text-sm */}
               Alerts
             </h3>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}> {/* Reduced text-sm to text-xs */}
               {train.alerts}
             </p>
           </div>
 
           {/* Conclusion */}
           <div>
-            <h3 className="font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+            <h3 className="font-semibold mb-1.5 text-sm" style={{ color: 'var(--text-primary)' }}> {/* Reduced mb-2 to mb-1.5, added text-sm */}
               Conclusion
             </h3>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}> {/* Reduced text-sm to text-xs */}
               AI reasoning placeholder text will go here to summarize the ranking.
             </p>
           </div>
