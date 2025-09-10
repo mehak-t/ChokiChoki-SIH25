@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import DataIngestion from "./pages/DataIngestion";
-import Progress from "./pages/Progress";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Reports from "./pages/Reports";
@@ -23,7 +22,6 @@ const App = () => (
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/data-ingestion" element={<DataIngestion />} />
-          <Route path="/progress" element={<Progress />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/databases" element={<Databases />} />

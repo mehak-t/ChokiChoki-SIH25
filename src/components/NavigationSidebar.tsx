@@ -1,4 +1,4 @@
-import { Home, FileText, Database, Upload, Activity, LogOut } from 'lucide-react';
+import { Home, FileText, Database, Upload, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface NavigationSidebarProps {
@@ -9,7 +9,6 @@ interface NavigationSidebarProps {
 const navigationItems = [
   { name: 'Dashboard', icon: Home, path: '/dashboard' },
   { name: 'Data Ingestion', icon: Upload, path: '/data-ingestion' },
-  { name: 'Processing Status', icon: Activity, path: '/progress' },
   { name: 'Reports', icon: FileText, path: '/reports' },
   { name: 'Databases', icon: Database, path: '/databases' }
 ];
@@ -26,7 +25,11 @@ export default function NavigationSidebar({ currentPage = '/dashboard', onLogout
       <div className="space-y-6">
         {/* Logo and KMRL text */}
         <div className="flex items-center space-x-3">
-          <img src="/logo.png" alt="KMRL Logo" className="h-10 w-auto" />
+          <img 
+            src="/logo.jpg" 
+            alt="KMRL Logo" 
+            className="h-10 w-auto" 
+          />
           <div className="text-2xl font-bold" style={{ color: '#00b8e6' }}>
             KMRL
           </div>
