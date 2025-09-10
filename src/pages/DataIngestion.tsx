@@ -77,7 +77,7 @@ export default function DataIngestion() {
         <div className="w-full max-w-2xl">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-            Fleet Data Ingestion
+            Upload Trainset Data
           </h1>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             Upload or input daily trainset operational data
@@ -233,7 +233,7 @@ export default function DataIngestion() {
               onClick={handleProcess}
               className="button-radius font-medium px-8 py-3"
               style={{ 
-                backgroundColor: 'var(--accent-orange)',
+                backgroundColor: '#00b8e6',
                 color: 'white'
               }}
               // Disable the button if no file is selected for the CSV tab

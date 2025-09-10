@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import IntroSplash from '@/components/ui/IntroSplash';
 
 export default function Login() {
   const [supervisorId, setSupervisorId] = useState('');
@@ -16,82 +17,79 @@ export default function Login() {
     navigate('/dashboard');
   };
 
+
   return (
-    <div className="min-h-screen flex items-center justify-center" 
-         style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="w-full max-w-md">
-        {/* Logo and Title Section */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gray-800 rounded-lg mx-auto mb-4"></div>
-          <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-            KMRL Fleet Command
-          </h1>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            Operations Control Center Access
-          </p>
-        </div>
-
-        {/* Login Card */}
-        <div className="card-radius card-shadow p-8" 
-             style={{ backgroundColor: 'var(--bg-secondary)' }}>
-          <h2 className="text-xl font-semibold mb-6" style={{ color: 'var(--text-primary)' }}>
-            Secure Login
-          </h2>
-          
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <Label htmlFor="supervisorId" className="text-sm font-medium">
-                Supervisor ID
-              </Label>
-              <Input
-                id="supervisorId"
-                type="text"
-                value={supervisorId}
-                onChange={(e) => setSupervisorId(e.target.value)}
-                className="mt-1 button-radius"
-                required
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="password" className="text-sm font-medium">
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 button-radius"
-                required
-              />
-            </div>
-            
-            <Button 
-              type="submit"
-              className="w-full button-radius font-medium py-3 mt-6"
-              style={{ 
-                backgroundColor: 'var(--accent-orange)',
-                color: 'white'
-              }}
-            >
-              Secure Login
-            </Button>
-          </form>
-          
-          <div className="text-center mt-6">
-            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              Authorized Personnel Only
-            </p>
-          </div>
-        </div>
-
-        <div className="text-center mt-4">
-          <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-            © 2025 Kochi Metro Rail Limited
-          </p>
-        </div>
-      </div>
+    <>
+    <IntroSplash />
+   <div className="min-h-screen flex items-center justify-center" 
+     style={{ backgroundColor: 'var(--bg-primary)' }}>
+  <div className="w-full max-w-md">
+    {/* Logo and Title Section */}
+    <div className="text-center mb-8">
+      {/* The src path is now updated to your new folder structure */}
+      <img 
+        src="/images/logo.jpg" 
+        alt="Kochi Metro Rail Limited Logo" 
+        className="h-20 mx-auto mb-4"
+      />
+      <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+        Login
+      </h1>
+      <p className="text-sm text-gray-600 mb-6">
+        Operations Control Center Access
+      </p>
     </div>
+
+   {/* Login Card */}
+<form className="bg-white p-8 rounded-lg shadow-lg" onSubmit={handleLogin}>
+  <h2 className="text-xl font-semibold mb-6 text-center">Secure Login</h2>
+
+  {/* Supervisor ID Field */}
+  <div className="mb-4">
+    <label htmlFor="supervisor-id" className="block text-gray-700 text-sm font-bold mb-2">
+      Supervisor ID
+    </label>
+    <input
+      type="text"
+      id="supervisor-id"
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      // Add value and onChange to control the input
+      value={supervisorId}
+      onChange={(e) => setSupervisorId(e.target.value)}
+    />
+  </div>
+
+  {/* Password Field */}
+  <div className="mb-6">
+    <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+      Password
+    </label>
+    <input
+      type="password"
+      id="password"
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+      // Add value and onChange to control the input
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+  </div>
+
+  {/* Secure Login Button - Changed type to "submit" */}
+  <button
+  className="w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+  style={{ backgroundColor: '#00b8e6'}}
+  type="submit"
+>
+  Secure Login
+</button>
+
+  {/* Authorized Personnel Only Text */}
+  <p className="text-center text-gray-500 text-xs mt-6">
+    Authorized Personnel Only
+  </p>
+</form>
+  </div>
+</div>
+    </>
   );
 }
