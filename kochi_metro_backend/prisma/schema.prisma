@@ -1,0 +1,262 @@
+generator client {
+  provider                    = "prisma-client-py"
+  enable_experimental_decimal = "true"
+  recursive_type_depth        = "-1"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model assets {
+  asset_id             String                 @id @db.VarChar(20)
+  asset_num            String                 @unique @db.VarChar(50)
+  description          String?
+  asset_type           String                 @db.VarChar(20)
+  classification       String?                @db.VarChar(20)
+  status               String                 @default("OPERATING") @db.VarChar(20)
+  location             String?                @db.VarChar(50)
+  parent_asset         String?                @db.VarChar(20)
+  manufacturer         String?                @db.VarChar(100)
+  model                String?                @db.VarChar(50)
+  serial_number        String?                @db.VarChar(100)
+  installation_date    DateTime?              @db.Date
+  warranty_expiry      DateTime?              @db.Date
+  purchase_price       Decimal?               @db.Decimal(15, 2)
+  replacement_cost     Decimal?               @db.Decimal(15, 2)
+  criticality          String?                @default("MEDIUM") @db.VarChar(10)
+  operating_hours      Decimal?               @default(0) @db.Decimal(10, 2)
+  total_distance_km    Decimal?               @default(0) @db.Decimal(12, 2)
+  created_date         DateTime?              @default(now()) @db.Timestamp(6)
+  modified_date        DateTime?              @default(now()) @db.Timestamp(6)
+  created_by           String?                @default("SYSTEM") @db.VarChar(50)
+  modified_by          String?                @default("SYSTEM") @db.VarChar(50)
+  asset_certificates   asset_certificates[]
+  asset_specifications asset_specifications[]
+  branding_campaigns   branding_campaigns[]
+  failure_reports      failure_reports[]
+  historical_outcomes  historical_outcomes[]
+  meter_readings       meter_readings[]
+  pm_schedules         pm_schedules[]
+  route_assignments    route_assignments[]
+  train_composition    train_composition[]
+  work_orders          work_orders[]
+
+  @@index([location], map: "idx_assets_location")
+  @@index([status], map: "idx_assets_status")
+  @@index([asset_type], map: "idx_assets_type")
+}
+
+model locations {
+  location_id             String    @id @db.VarChar(20)
+  location_name           String    @db.VarChar(100)
+  location_type           String?   @db.VarChar(20)
+  description             String?
+  parent_location         String?   @db.VarChar(20)
+  depot_capacity          Int?
+  is_maintenance_facility Boolean?  @default(false)
+  coordinates_lat         Decimal?  @db.Decimal(10, 8)
+  coordinates_lng         Decimal?  @db.Decimal(11, 8)
+  created_date            DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model work_orders {
+  wo_num             String            @id @db.VarChar(20)
+  asset_id           String            @db.VarChar(20)
+  wo_type            String            @db.VarChar(20)
+  wo_status          String            @default("APPROVED") @db.VarChar(20)
+  priority           Int?              @default(3)
+  description        String?
+  work_type          String?           @db.VarChar(50)
+  scheduled_start    DateTime?         @db.Timestamp(6)
+  scheduled_finish   DateTime?         @db.Timestamp(6)
+  actual_start       DateTime?         @db.Timestamp(6)
+  actual_finish      DateTime?         @db.Timestamp(6)
+  estimated_duration Int?
+  actual_duration    Int?
+  cost_center        String?           @db.VarChar(20)
+  total_cost         Decimal?          @default(0) @db.Decimal(12, 2)
+  created_date       DateTime?         @default(now()) @db.Timestamp(6)
+  created_by         String?           @default("SYSTEM") @db.VarChar(50)
+  failure_reports    failure_reports[]
+  wo_materials       wo_materials[]
+  assets             assets            @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([asset_id, wo_status], map: "idx_wo_asset_status")
+  @@index([scheduled_start], map: "idx_wo_scheduled_start")
+}
+
+model pm_schedules {
+  pm_id              String    @id @db.VarChar(20)
+  asset_id           String    @db.VarChar(20)
+  pm_type            String    @db.VarChar(50)
+  frequency_type     String?   @db.VarChar(20)
+  frequency_value    Int?
+  description        String?
+  estimated_duration Int?
+  lead_time          Int?
+  is_active          Boolean?  @default(true)
+  next_due_date      DateTime? @db.Date
+  last_completed     DateTime? @db.Date
+  created_date       DateTime? @default(now()) @db.Timestamp(6)
+  assets             assets    @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([next_due_date], map: "idx_pm_next_due")
+}
+
+model asset_specifications {
+  spec_id            String    @id @default(cuid())
+  asset_id           String    @db.VarChar(20)
+  spec_type          String    @db.VarChar(50)
+  spec_name          String    @db.VarChar(100)
+  spec_value         String?   @db.VarChar(200)
+  uom                String?   @db.VarChar(20)
+  min_value          Decimal?  @db.Decimal(12, 4)
+  max_value          Decimal?  @db.Decimal(12, 4)
+  last_reading_date  DateTime? @db.Timestamp(6)
+  last_reading_value Decimal?  @db.Decimal(12, 4)
+  condition_status   String?   @default("GOOD") @db.VarChar(20)
+  created_date       DateTime? @default(now()) @db.Timestamp(6)
+  assets             assets    @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model failure_reports {
+  failure_id          String       @id @default(cuid())
+  asset_id            String       @db.VarChar(20)
+  wo_num              String?      @db.VarChar(20)
+  failure_date        DateTime     @db.Timestamp(6)
+  failure_code        String?      @db.VarChar(20)
+  failure_class       String?      @db.VarChar(50)
+  problem_description String?
+  cause_description   String?
+  remedy_description  String?
+  downtime_hours      Decimal?     @db.Decimal(8, 2)
+  cost_impact         Decimal?     @db.Decimal(12, 2)
+  reported_by         String?      @db.VarChar(50)
+  created_date        DateTime?    @default(now()) @db.Timestamp(6)
+  assets              assets       @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+  work_orders         work_orders? @relation(fields: [wo_num], references: [wo_num], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model meter_readings {
+  reading_id       String    @id @default(cuid())
+  asset_id         String    @db.VarChar(20)
+  meter_type       String    @db.VarChar(50)
+  reading_date     DateTime  @db.Timestamp(6)
+  reading_value    Decimal   @db.Decimal(12, 2)
+  previous_reading Decimal?  @db.Decimal(12, 2)
+  delta_value      Decimal?  @db.Decimal(12, 2)
+  entered_by       String?   @db.VarChar(50)
+  reading_source   String?   @default("MANUAL") @db.VarChar(20)
+  created_date     DateTime? @default(now()) @db.Timestamp(6)
+  assets           assets    @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([asset_id, reading_date], map: "idx_meter_readings_date")
+}
+
+model inventory_items {
+  item_id         String         @id @db.VarChar(20)
+  item_num        String         @unique @db.VarChar(50)
+  description     String?
+  item_type       String?        @db.VarChar(20)
+  category        String?        @db.VarChar(50)
+  unit_cost       Decimal?       @db.Decimal(10, 2)
+  stock_level     Int?           @default(0)
+  reorder_level   Int?           @default(0)
+  max_stock_level Int?
+  vendor          String?        @db.VarChar(100)
+  created_date    DateTime?      @default(now()) @db.Timestamp(6)
+  wo_materials    wo_materials[]
+}
+
+model wo_materials {
+  wo_material_id    String          @id @default(cuid())
+  wo_num            String          @db.VarChar(20)
+  item_id           String          @db.VarChar(20)
+  quantity_required Decimal?        @db.Decimal(10, 2)
+  quantity_used     Decimal?        @db.Decimal(10, 2)
+  unit_cost         Decimal?        @db.Decimal(10, 2)
+  total_cost        Decimal?        @db.Decimal(12, 2)
+  inventory_items   inventory_items @relation(fields: [item_id], references: [item_id], onDelete: NoAction, onUpdate: NoAction)
+  work_orders       work_orders     @relation(fields: [wo_num], references: [wo_num], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model asset_certificates {
+  cert_id            String    @id @default(cuid())
+  asset_id           String    @db.VarChar(20)
+  certificate_type   String    @db.VarChar(50)
+  certificate_number String?   @db.VarChar(100)
+  issue_date         DateTime? @db.Date
+  expiry_date        DateTime? @db.Date
+  issuing_authority  String?   @db.VarChar(100)
+  status             String?   @default("VALID") @db.VarChar(20)
+  renewal_due_days   Int?
+  created_date       DateTime? @default(now()) @db.Timestamp(6)
+  assets             assets    @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([expiry_date, status], map: "idx_certificates_expiry")
+}
+
+model historical_outcomes {
+  outcome_id            Int      @id @default(autoincrement())
+  asset_id              String   @db.VarChar(20)
+  event_date            DateTime @db.Timestamp(6)
+  mileage_at_event      Decimal? @db.Decimal(10, 2)
+  hours_at_event        Decimal? @db.Decimal(10, 2)
+  days_since_last_maint Int?
+  maintenance_type      String?  @db.VarChar(50)
+  failure_occurred      Boolean? @default(false)
+  failure_severity      String?  @db.VarChar(20)
+  cost_impact           Decimal? @db.Decimal(12, 2)
+  downtime_hours        Decimal? @db.Decimal(8, 2)
+  assets                assets   @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([asset_id, event_date], map: "idx_historical_outcomes_asset")
+}
+
+model train_composition {
+  composition_id String    @id @default(cuid())
+  train_set_id   String    @db.VarChar(20)
+  car_position   Int
+  car_asset_id   String    @db.VarChar(20)
+  car_type       String?   @db.VarChar(20)
+  is_driving_car Boolean?  @default(false)
+  coupled_date   DateTime? @db.Date
+  decoupled_date DateTime? @db.Date
+  assets         assets    @relation(fields: [car_asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model route_assignments {
+  assignment_id        String    @id @default(cuid())
+  asset_id             String    @db.VarChar(20)
+  route_name           String?   @db.VarChar(50)
+  service_date         DateTime? @db.Date
+  shift_type           String?   @db.VarChar(20)
+  scheduled_start_time DateTime? @db.Time(6)
+  scheduled_end_time   DateTime? @db.Time(6)
+  actual_start_time    DateTime? @db.Time(6)
+  actual_end_time      DateTime? @db.Time(6)
+  total_distance_km    Decimal?  @db.Decimal(8, 2)
+  passenger_count      Int?
+  delay_minutes        Int?      @default(0)
+  assets               assets    @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model branding_campaigns {
+  campaign_id               String    @id @default(cuid())
+  asset_id                  String    @db.VarChar(20)
+  advertiser_name           String?   @db.VarChar(100)
+  campaign_name             String?   @db.VarChar(100)
+  start_date                DateTime? @db.Date
+  end_date                  DateTime? @db.Date
+  contract_value            Decimal?  @db.Decimal(12, 2)
+  minimum_hours_required    Int?
+  actual_hours_served       Int?      @default(0)
+  sla_compliance_percentage Decimal?  @db.Decimal(5, 2)
+  penalty_amount            Decimal?  @default(0) @db.Decimal(10, 2)
+  created_date              DateTime? @default(now()) @db.Timestamp(6)
+  assets                    assets    @relation(fields: [asset_id], references: [asset_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([asset_id, start_date, end_date], map: "idx_branding_dates")
+}

@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pandas
+scikit-learn
+joblib
+pymoo
+prisma[asyncpg]
+python-dotenv
+imbalanced-learnadd 
+colorama
+tabulate
+aiohttp

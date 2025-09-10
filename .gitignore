@@ -22,3 +22,65 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+.venv/
+*.pyc
+*.pyo
+*.pyd
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+dist/
+build/
+
+# Database
+*.sql
+*.db
+*.sqlite
+.prisma/
+
+# Logs
+*.log
+server.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+debug_api.js
+frontend_api_test.html
+test_integration.py
+
+.vscode/
+
+
+
+*.csv
+*.sql
+
+
+.DS_Store
